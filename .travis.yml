@@ -17,7 +17,9 @@ jobs:
       before_install:
       - chmod +x gradlew
       before_script:
+      script: ./gradlew wrapper
       script: ./gradlew clean build
+
       before_deploy:
         - git config --local user.name "Travis CI"
         - git config --local user.email "travis@example.com"
