@@ -5,6 +5,7 @@ notifications:
 env:
   - RELEASE_TAG="release-$TRAVIS_BUILD_NUMBER"
 if: tag IS blank
+
 jobs:
   include:
     - stage: build and publish
@@ -27,6 +28,7 @@ jobs:
     - stage: deploy to cf
       language: java
       before_install:
+        - chmod +x gradlew
         - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
         - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
         - sudo apt-get update
@@ -43,7 +45,6 @@ jobs:
         - scripts/migrate-databases.sh pal-tracker .
       deploy:
         provider: cloudfoundry
-
         api: $CF_API_URL
         username: $CF_USERNAME
         password: $CF_PASSWORD
